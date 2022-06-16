@@ -1,0 +1,241 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Libplanet.Unity</name>
+    </assembly>
+    <members>
+        <member name="T:Libplanet.Unity.ActionBase">
+            <summary>
+            A base class for <see cref="T:Libplanet.Action.IAction"/>s.  Inherit this class when implementing
+            concrete game actions.
+            </summary>
+        </member>
+        <member name="P:Libplanet.Unity.ActionBase.PlainValue">
+            <inheritdoc/>
+        </member>
+        <member name="M:Libplanet.Unity.ActionBase.LoadPlainValue(Bencodex.Types.IValue)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Libplanet.Unity.ActionBase.Execute(Libplanet.Action.IActionContext)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Libplanet.Unity.Agent">
+            <summary>
+            Agent runs <see cref="T:Libplanet.Unity.Miner"/>, <see cref="T:Libplanet.Unity.SwarmRunner"/> and Action Controller
+            You can use <c>RunOnMainThread</c>, <c>MakeTransaction</c> to manage actions.
+            </summary>
+        </member>
+        <member name="P:Libplanet.Unity.Agent.Address">
+            <summary>
+            Address of the <see cref="P:Libplanet.Unity.Agent.PrivateKey"/>.
+            </summary>
+        </member>
+        <member name="M:Libplanet.Unity.Agent.Initialize(System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{Libplanet.Action.PolymorphicAction{Libplanet.Unity.ActionBase}}})">
+            <summary>
+            Initialize Agent.
+            Because it is <see cref="T:Libplanet.Unity.MonoSingleton`1"/>, use Initialize instead of constructor.
+            </summary>
+            <param name="renderers">Listener to check status.</param>
+        </member>
+        <member name="M:Libplanet.Unity.Agent.GetState(Libplanet.Address)">
+            <summary>
+            Returns the status of the current <see cref="T:Libplanet.Blockchain.BlockChain`1"/>.
+            </summary>
+            <param name="address"><see cref="P:Libplanet.Unity.Agent.Address"/> to be use.</param>
+            <returns>This can be <c>null</c>.</returns>
+        </member>
+        <member name="M:Libplanet.Unity.Agent.MakeTransaction(System.Collections.Generic.IEnumerable{Libplanet.Unity.ActionBase})">
+            <summary>
+            Stage the action transactions.
+            </summary>
+            <param name="gameActions"><see cref="N:Libplanet.Action"/> list to be use.</param>
+        </member>
+        <member name="M:Libplanet.Unity.Agent.RunOnMainThread(System.Action)">
+            <summary>
+            Append action.
+            </summary>
+            <param name="action"><see cref="N:Libplanet.Action"/> to be use.</param>
+        </member>
+        <member name="M:Libplanet.Unity.Agent.OnDestroy">
+            <summary>
+            Dispose <see cref="T:Libplanet.Net.Swarm`1"/> and <see cref="T:NetMQ.NetMQConfig"/> clean up.
+            </summary>
+        </member>
+        <member name="T:Libplanet.Unity.Miner">
+            <summary>
+            <see cref="T:Libplanet.Unity.Miner"/> class provides basic mining coroutine.
+            </summary>
+        </member>
+        <member name="F:Libplanet.Unity.Miner._swarm">
+            <summary>
+            The <see cref="T:Libplanet.Net.Swarm`1"/> to use for mining.
+            </summary>
+        </member>
+        <member name="F:Libplanet.Unity.Miner._privateKey">
+            <summary>
+            The <see cref="T:Libplanet.Crypto.PrivateKey"/> to sign mined <see cref="T:Libplanet.Blocks.Block`1"/>s.
+            </summary>
+        </member>
+        <member name="M:Libplanet.Unity.Miner.#ctor(Libplanet.Net.Swarm{Libplanet.Action.PolymorphicAction{Libplanet.Unity.ActionBase}},Libplanet.Crypto.PrivateKey)">
+            <summary>
+            Initialize a <see cref="T:Libplanet.Unity.Miner"/> instance.
+            </summary>
+            <param name="swarm">The <see cref="T:Libplanet.Net.Swarm`1"/> to use for mining.</param>
+            <param name="privateKey">The <see cref="T:Libplanet.Crypto.PrivateKey"/> to sign
+            mined <see cref="T:Libplanet.Blocks.Block`1"/>s.</param>
+        </member>
+        <member name="M:Libplanet.Unity.Miner.CoStart">
+            <summary>
+            Processes mining and wait.
+            </summary>
+            <returns>Mining Coroutine.</returns>
+        </member>
+        <member name="M:Libplanet.Unity.Miner.Mine">
+            <summary>
+            Uses <see cref="T:Libplanet.Blockchain.BlockChain`1"/> to implement <see cref="M:Libplanet.Unity.Miner.Mine"/>.
+            </summary>
+            <returns>An awaitable task with a <see cref="T:Libplanet.Blocks.Block`1"/> that is mined.</returns>
+        </member>
+        <member name="T:Libplanet.Unity.MonoSingleton`1">
+            <summary>
+            A singleton implementation with <see cref="T:UnityEngine.MonoBehaviour"/> as its base class.
+            </summary>
+            <typeparam name="T">The class to wrap with this singleton pattern.</typeparam>
+        </member>
+        <member name="P:Libplanet.Unity.MonoSingleton`1.Instance">
+            <summary>
+            The singleton instance of <see cref="T:Libplanet.Unity.MonoSingleton`1"/>.
+            </summary>
+        </member>
+        <member name="M:Libplanet.Unity.MonoSingleton`1.Awake">
+            <summary>
+            Initialize <see cref="T:Libplanet.Unity.MonoSingleton`1"/>.
+            </summary>
+        </member>
+        <member name="M:Libplanet.Unity.MonoSingleton`1.OnDestroy">
+            <summary>
+            None.
+            </summary>
+        </member>
+        <member name="M:Libplanet.Unity.MonoSingleton`1.OnApplicationQuit">
+            <summary>
+            Update _applicationIsQuitting status.
+            </summary>
+        </member>
+        <member name="T:Libplanet.Unity.Paths">
+            <summary>
+            Various file paths for storing persistent data.
+            </summary>
+        </member>
+        <member name="F:Libplanet.Unity.Paths.GenesisBlockPath">
+            <summary>
+            Path to storing a genesis <see cref="T:Libplanet.Blocks.Block`1"/>.
+            </summary>
+        </member>
+        <member name="F:Libplanet.Unity.Paths.SwarmConfigPath">
+            <summary>
+            Path to storing a <see cref="T:Libplanet.Node.SwarmConfig"/>.
+            </summary>
+        </member>
+        <member name="F:Libplanet.Unity.Paths.StorePath">
+            <summary>
+            Path to storing chain data.
+            </summary>
+        </member>
+        <member name="F:Libplanet.Unity.Paths.PrivateKeyPath">
+            <summary>
+            Path to storing a <see cref="T:Libplanet.Crypto.PrivateKey"/>.
+            </summary>
+        </member>
+        <member name="F:Libplanet.Unity.Paths.TempPrivateKeysPath">
+            <summary>
+            Path to storing temporary <see cref="T:Libplanet.Crypto.PrivateKey"/>s with memos.
+            </summary>
+        </member>
+        <member name="T:Libplanet.Unity.SwarmRunner">
+            <summary>
+            <see cref="T:Libplanet.Unity.SwarmRunner"/> class provides <see cref="T:Libplanet.Net.Swarm`1"/> start coroutine.
+            </summary>
+        </member>
+        <member name="M:Libplanet.Unity.SwarmRunner.#ctor(Libplanet.Net.Swarm{Libplanet.Action.PolymorphicAction{Libplanet.Unity.ActionBase}},Libplanet.Crypto.PrivateKey)">
+            <summary>
+            Initialize a <see cref="T:Libplanet.Unity.SwarmRunner"/> instance.
+            </summary>
+            <param name="swarm">The <see cref="T:Libplanet.Net.Swarm`1"/> to use.</param>
+            <param name="privateKey">The <see cref="P:Libplanet.Unity.SwarmRunner.PrivateKey"/> to use.</param>
+        </member>
+        <member name="M:Libplanet.Unity.SwarmRunner.CoSwarmRunner">
+            <summary>
+            Start <see cref="T:Libplanet.Net.Swarm`1"/> bootstrap, preload and wait.
+            </summary>
+            <returns>It exists only for WaitUntil.</returns>
+        </member>
+        <member name="T:Libplanet.Unity.Utils">
+            <summary>
+            A static class with various helper methods for handling persistent data.
+            </summary>
+        </member>
+        <member name="M:Libplanet.Unity.Utils.CreateSwarmConfig(System.String)">
+            <summary>
+            Creates a new <see cref="T:Libplanet.Node.SwarmConfig"/> and writes to <paramref name="path"/>.
+            If one already exists at <paramref name="path"/>, overwrites it.
+            </summary>
+            <param name="path">File path to save a <see cref="T:Libplanet.Node.SwarmConfig"/>.</param>
+        </member>
+        <member name="M:Libplanet.Unity.Utils.CreateGenesisBlock(System.String)">
+            <summary>
+            Creates a new genesis <see cref="T:Libplanet.Blocks.Block`1"/> and writes to <paramref name="path"/>.
+            If one already exists at <paramref name="path"/>, overwrites it.
+            </summary>
+            <param name="path">The path to save a genesis <see cref="T:Libplanet.Blocks.Block`1"/>.</param>
+        </member>
+        <member name="M:Libplanet.Unity.Utils.CreatePrivateKey(System.String)">
+            <summary>
+            Creates a new <see cref="T:Libplanet.Crypto.PrivateKey"/> and writes to <paramref name="path"/>.
+            If one already exists at <paramref name="path"/>, overwrites it.
+            </summary>
+            <param name="path">The path to save a <see cref="T:Libplanet.Crypto.PrivateKey"/>.</param>
+        </member>
+        <member name="M:Libplanet.Unity.Utils.LoadSwarmConfig(System.String)">
+            <summary>
+            Loads a <see cref="T:Libplanet.Node.SwarmConfig"/> from <paramref name="path"/>.
+            </summary>
+            <param name="path">Path to a file containing a <see cref="T:Libplanet.Node.SwarmConfig"/>.</param>
+            <returns>A <see cref="T:Libplanet.Node.SwarmConfig"/> loaded from <paramref name="path"/>.</returns>
+            <exception cref="T:System.IO.FileNotFoundException">If no file was found at
+            <paramref name="path"/>.</exception>
+        </member>
+        <member name="M:Libplanet.Unity.Utils.LoadGenesisBlock(System.String)">
+            <summary>
+            Loads a genesis <see cref="T:Libplanet.Blocks.Block`1"/> from <paramref name="path"/>.
+            </summary>
+            <param name="path">Path to a file containing a genesis <see cref="T:Libplanet.Blocks.Block`1"/>.</param>
+            <returns>A genesis <see cref="T:Libplanet.Blocks.Block`1"/> loaded from <paramref name="path"/>.</returns>
+            <exception cref="T:System.IO.FileNotFoundException">If no file was found at
+            <paramref name="path"/>.</exception>
+        </member>
+        <member name="M:Libplanet.Unity.Utils.LoadPrivateKey(System.String)">
+            <summary>
+            Loads a <see cref="T:Libplanet.Crypto.PrivateKey"/> from <paramref name="path"/>.
+            </summary>
+            <param name="path">Path to a file containing a <see cref="T:Libplanet.Crypto.PrivateKey"/>.</param>
+            <returns>A <see cref="T:Libplanet.Crypto.PrivateKey"/> loaded from <paramref name="path"/>.</returns>
+            <exception cref="T:System.IO.FileNotFoundException">If no file was found at
+            <paramref name="path"/>.</exception>
+        </member>
+        <member name="M:Libplanet.Unity.Utils.LoadStore(System.String)">
+            <summary>
+            Loads a pair of <see cref="T:Libplanet.Store.IStore"/> and <see cref="T:Libplanet.Store.IStateStore"/> from
+            <paramref name="path"/>.
+            </summary>
+            <param name="path">The location of a directory containing <see cref="T:Libplanet.Store.IStore"/>
+            and <see cref="T:Libplanet.Store.IStateStore"/>.</param>
+            <returns>A pair of loaded <see cref="T:Libplanet.Store.IStore"/> and <see cref="T:Libplanet.Store.IStateStore"/> instances
+            from <paramref name="path"/>.</returns>
+            <remarks>
+            Unlike other methods for loading, if stores are not found at <paramref name="path"/>,
+            they are created silently.
+            </remarks>
+        </member>
+    </members>
+</doc>
